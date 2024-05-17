@@ -89,6 +89,7 @@
 `Obstacle` 추상 클래스를 상속받아 구체적인 장애물 클래스를 구현한 `SmallCactus`, `LargeCactus`, `Bird` 클래스와 이를 생성하는 `ObstacleFactory` 클래스도 포함되어 있습니다.
 
 또한, `ObstacleUpdateStrategy` 추상 클래스를 상속받아 장애물 업데이트 전략을 구현한 `DefaultUpdateStrategy` 클래스와 `Cloud` 클래스도 포함되어 있습니다.
+- `Cloud`는 장애물이 아니므로 따로 상속받지 않은 독립적인 클래스로 구현
 
 ## 사용된 패턴
 
