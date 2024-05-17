@@ -79,3 +79,8 @@
   - update(): 구름의 위치를 업데이트합니다.
 
   - draw(SCREEN): 구름을 화면에 그립니다.
+
+## 클래스 다이어그램
+
+![alt text](image.png)
+
