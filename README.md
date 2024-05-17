@@ -149,7 +149,7 @@ class Dinosaur:
         self.state.handle_input(self, userInput)
         self.state.update(self)
 ```
-
+---
 ### Strategy Pattern (전략 패턴)
 목적 : 특정 클래스의 알고리즘을 런타임에 변경할 수 있도록 합니다.
 
@@ -183,7 +183,7 @@ class Obstacle:
     def update(self):
         self.update_strategy.update(self)
 ```
-
+---
 ### Factory Pattern (팩토리 패턴)
 목적 : 객체 생성을 별도의 클래스로 분리하여, 객체 생성 과정을 캡슐화. 이를 통해 객체 생성의 복잡성을 줄임.
 
