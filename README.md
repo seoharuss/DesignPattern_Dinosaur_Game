@@ -89,3 +89,114 @@
 `Obstacle` 추상 클래스를 상속받아 구체적인 장애물 클래스를 구현한 `SmallCactus`, `LargeCactus`, `Bird` 클래스와 이를 생성하는 `ObstacleFactory` 클래스도 포함되어 있습니다.
 
 또한, `ObstacleUpdateStrategy` 추상 클래스를 상속받아 장애물 업데이트 전략을 구현한 `DefaultUpdateStrategy` 클래스와 `Cloud` 클래스도 포함되어 있습니다.
+
+## 사용된 패턴
+
+### State Pattern (상태 패턴)
+목적 : 객체의 내부 상태에 따라 행동을 변경할 수 있게 해줍니다. 객체는 자신의 클래스가 바뀐 것 처럼 행동합니다.
+
+코드에서의 사용 : 
+- 추상 클래스 DinoState: 공룡의 상태를 정의하는 기본 클래스입니다. 상태별로 처리해야 할 입력과 업데이트 메서드를 선언합니다.
+```python
+class DinoState:
+    def handle_input(self, dino, userInput):
+        pass
+
+    def update(self, dino):
+        pass
+
+    def enter(self, dino):
+        pass
+
+```
+
+- 구체적인 상태 클래스들 (RunningState, DuckingState, JumpingState): DinoState를 상속받아 각각의 상태에 맞는 행동을 정의합니다.
+```python
+class RunningState(DinoState):
+    def enter(self, dino):
+        dino.dino_run = True
+        dino.dino_duck = False
+        dino.dino_jump = False
+        dino.image = dino.run_img[0]
+        dino.dino_rect.y = dino.Y_POS
+
+    def handle_input(self, dino, userInput):
+        if userInput[pygame.K_UP]:
+            dino.set_state(JumpingState())
+        elif userInput[pygame.K_DOWN]:
+            dino.set_state(DuckingState())
+
+    def update(self, dino):
+        dino.image = dino.run_img[dino.step_index // 5]
+        dino.dino_rect.x = dino.X_POS
+        dino.dino_rect.y = dino.Y_POS
+        dino.step_index = (dino.step_index + 1) % 10
+```
+
+- Dinosaur 클래스: 공룡 객체가 현재 상태를 가지고 있고, 상태에 따라 행동을 변화시킵니다.
+```python
+class Dinosaur:
+    def __init__(self):
+        ...
+        self.state = RunningState()
+        self.state.enter(self)
+
+    def set_state(self, state):
+        self.state = state
+        self.state.enter(self)
+
+    def update(self, userInput):
+        self.state.handle_input(self, userInput)
+        self.state.update(self)
+```
+
+### Strategy Pattern (전략 패턴)
+목적 : 특정 클래스의 알고리즘을 런타임에 변경할 수 있도록 합니다.
+
+코드에서의 사용 : 
+- 추상 클래스 ObstacleUpdateStrategy: 장애물 업데이트 전략을 정의합니다.
+```python
+class ObstacleUpdateStrategy:
+    def update(self, obstacle):
+        pass
+```
+
+- 구체적인 전략 클래스 DefaultUpdateStrategy: 기본 장애물 업데이트 로직을 구현합니다.
+```python
+class DefaultUpdateStrateg(ObstacleUpdateStrategy):
+    def update(self, obstacle):
+        obstacle.rect.x -= game_speed
+        if obstacle.rect.x < -obstacle.rect.width:
+            obstacles.pop()
+```
+
+- Obstacle 클래스: 장애물 객체가 업데이트 전략을 가지며, 이를 통해 장애물의 동작을 정의합니다.
+```python
+class Obstacle:
+    def __init__(self, image, type, update_strategy):
+        self.image = image
+        self.type = type
+        self.rect = self.image[self.type].get_rect()
+        self.rect.x = SCREEN_WIDTH
+        self.update_strategy = update_strategy
+
+    def update(self):
+        self.update_strategy.update(self)
+```
+
+### Factory Pattern (팩토리 패턴)
+목적 : 객체 생성을 별도의 클래스로 분리하여, 객체 생성 과정을 캡슐화. 이를 통해 객체 생성의 복잡성을 줄임.
+
+코드에서의 사용 : 
+- ObstacleFactory 클래스: 주어진 타입에 따라 적절한 장애물 객체를 생성합니다.
+```python
+class ObstacleFactory:
+    @staticmethod
+    def create_obstacle(obstacle_type):
+        if obstacle_type == "small_cactus":
+            return SmallCactus()
+        elif obstacle_type == "large_cactus":
+            return LargeCactus()
+        elif obstacle_type == "bird":
+            return Bird()
+```
