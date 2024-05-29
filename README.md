@@ -80,9 +80,9 @@
 
   - draw(SCREEN): 구름을 화면에 그립니다.
 
-## 클래스 다이어그램
+## Class Diagram
 
-![alt text](image.png)
+![image](https://github.com/seoharuss/DesignPattern_Dinosaur_Game/assets/127467806/d9cd5c50-e846-478a-81c2-cbf826be702a)
 
 `DinoState` 추상 클래스를 상속받아 구체적인 상태를 구현한 `RunningState`, `DuckingState`, `JumpingState` 클래스와 이를 사용하는 `Dinosaur` 클래스를 보여줍니다.
 
@@ -90,6 +90,11 @@
 
 또한, `ObstacleUpdateStrategy` 추상 클래스를 상속받아 장애물 업데이트 전략을 구현한 `DefaultUpdateStrategy` 클래스와 `Cloud` 클래스도 포함되어 있습니다.
 - `Cloud`는 장애물이 아니므로 따로 상속받지 않은 독립적인 클래스로 구현
+
+## Sequence Diagram
+
+![image](https://github.com/seoharuss/DesignPattern_Dinosaur_Game/assets/127467806/27dce79e-0218-403e-8a96-09983fe75d62)
+
 
 ## 사용된 패턴
 
